@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Mobile HLS video</title>
+        <!-- 导入的videojs是7.0版本以上的，集成VHS协议库，可播放HLS流媒体视频 -->
+        <link href="https://cdn.bootcdn.net/ajax/libs/video.js/7.0.0/video-js.min.css" rel="stylesheet" type="text/css">
+        <script src="https://cdn.bootcdn.net/ajax/libs/video.js/7.0.0/video.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/videojs-flash@2/dist/videojs-flash.min.js"></script>
+    </head>
+    <body>
+	<script type="text/javascript">
+	var player;
+        function playOther(url){
+             var toUrl = "video.html?name=" + encodeURI(encodeURI(url));
+             window.location.href=toUrl;
+	}
+	function playUrl(url){
+          if(player != undefined){
+		player.dispose();
+	  }
+	  var myVideoDiv = document.getElementById("myVideoDiv")
+	  myVideoDiv.innerHTML = "<video id='myvideo' class='video-js vjs-default-skin  vjs-big-play-centered' poster='' data-setup='{\"fluid\":true}' style='width:auto;' controls ><source src=" +url+ " type='application/x-mpegURL'></video>"
+
+	   player = videojs('myvideo', {
+		autoplay: true,
+	   });
+		//player.pause();
+		//player.currentTime(0);
+		//player.src(url);
+                //player.load()
+		player.play()
+                console.log("playing "+url)
+        }
+	window.onload = function(){
+
+	    var url = location.search,
+		obj = {};
+
+	    if(url.indexOf("?") != -1) {　　
+		var str = url.substr(1);
+		strs = str.split("&");　　
+		for(var i = 0; i < strs.length; i++) {　　　
+		    obj[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);　　
+			    console.log("param:"+strs[i])
+		}
+	    }
+	   console.log('传过来的参数是:', decodeURI(obj["name"]));
+           playUrl(obj["name"])  
+	}
+	</script>
+
+	<div align="center" >
+		<div id="myVideoDiv" align="center" >
+		</div>
+		<div class="box"> 
+		<a href="#"  align="left" onclick="playUrl('http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8')" class="f40" >CCTV1高清</a>
+		</div> 
+		<div class="box"> 
+		<a href="#"  align="left" onclick="playUrl('http://ivi.bupt.edu.cn/hls/cctv3hd.m3u8')" class="f40" >CCTV3高清</a>
+		</div> 
+		<div class="box"> 
+		<a href="#"  align="left" onclick="playUrl('http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8')" class="f40" >CCTV6高清</a>
+		</div> 
+		<div class="box"> 
+		<a href="#"  align="left" onclick="playUrl('rtmp://58.200.131.2:1935/livetv/hunantv')" class="f40" >湖南卫视(电脑)</a>
+		</div> 
+		<div class="box"> 
+		<a href="#"  align="left" onclick="playUrl('rtmp://media3.sinovision.net:1935/live/livestream')" class="f40" >美国中文电视(电脑)</a>
+		</div> 
+		<div class="box"> 
+		<a href="#" align="left" onclick="playUrl('rtmp://202.69.69.180:443/webcast/bshdlive-pc')" class="f40" >香港财经(电脑)</a>
+		</div> 
+	</div>
+    </body>
+</html>
+
